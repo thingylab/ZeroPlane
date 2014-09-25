@@ -18,7 +18,8 @@ protoc-c --c_out=./xpplugin/ protobuf/ZeroPlane.proto
 # Compiler flags
 DEBUG_FLAG='-g'
 PROTOBUF_INCL=$(pkg-config --cflags libprotobuf-c)
-INCLUDE_FLAGS="-I./SDK/CHeaders/XPLM -I./SDK/CHeaders/Widgets -I./xpplugin/ $PROTOBUF_INCL"
+ZMQ_INCL="-I/usr/local/include"
+INCLUDE_FLAGS="-I./SDK/CHeaders/XPLM -I./SDK/CHeaders/Widgets -I./xpplugin/ $PROTOBUF_INCL $ZMQ_INCL"
 MACROS_FLAGS="-DAPL=1 -DIBM=0 -DLIN=0 -DXPLM200=1"
 
 CC="clang -c $DEBUG_FLAG $INCLUDE_FLAGS $MACROS_FLAGS"
@@ -37,15 +38,11 @@ LD="clang -bundle"
 ARCH="-arch x86_64 -mmacosx-version-min=10.6"
 OTHER_LDFLAGS="-single_module"
 PROTOBUF_LINK=$(pkg-config --libs libprotobuf-c)
+ZMQ_LINK="-L/usr/local/lib -lzmq"
 EXPORT_FLAGS="-Wl,-exported_symbol -Wl,_XPluginStart -Wl,-exported_symbol -Wl,_XPluginEnable -Wl,-exported_symbol -Wl,_XPluginReceiveMessage -Wl,-exported_symbol -Wl,_XPluginDisable -Wl,-exported_symbol -Wl,_XPluginStop"
 FRAMEWORK_INCL="-FSDK/Libraries/Mac"
 FRAMEWORKS="-framework OpenGL -framework CoreFoundation -framework XPLM -framework XPWidgets"
-LIBS="-L./bin/ $PROTOBUF_LINK"
+LIBS="-L./bin/ $PROTOBUF_LINK $ZMQ_LINK"
 LINK_FLAGS="$PROTOBUF_LINK"
 
 $LD $ARCH $OTHER_LDFLAGS $LIBS $FRAMEWORK_INCL $FRAMEWORKS $EXPORT_FLAGS ./bin/*.o -o ./bin/pierres_plugin.xpl
-
-# Ld Build/Products/Debug/CustomCommands.xpl normal x86_64
-#     cd /Users/pierre/Documents/Projects/XPlane/TestPlugin
-#     export MACOSX_DEPLOYMENT_TARGET=10.6
-#     /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -bundle -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -L/Users/pierre/Documents/Projects/XPlane/TestPlugin/Build/Products/Debug -F/Users/pierre/Documents/Projects/XPlane/TestPlugin/Build/Products/Debug -FSDK/Libraries/Mac -filelist /Users/pierre/Documents/Projects/XPlane/TestPlugin/Build/Intermediates/CustomCommands.build/Debug/CustomCommands.build/Objects-normal/x86_64/CustomCommands.LinkFileList -mmacosx-version-min=10.6 -Wl,-exported_symbol -Wl,_XPluginStart -Wl,-exported_symbol -Wl,_XPluginEnable -Wl,-exported_symbol -Wl,_XPluginReceiveMessage -Wl,-exported_symbol -Wl,_XPluginDisable -Wl,-exported_symbol -Wl,_XPluginStop -framework OpenGL -framework CoreFoundation -framework XPLM -framework XPWidgets -single_module -Xlinker -dependency_info -Xlinker /Users/pierre/Documents/Projects/XPlane/TestPlugin/Build/Intermediates/CustomCommands.build/Debug/CustomCommands.build/Objects-normal/x86_64/CustomCommands_dependency_info.dat -o /Users/pierre/Documents/Projects/XPlane/TestPlugin/Build/Products/Debug/CustomCommands.xpl

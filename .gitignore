@@ -1,3 +1,4 @@
 *.o
 copy
 bin/*
+client/python/venv

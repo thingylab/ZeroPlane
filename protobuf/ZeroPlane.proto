@@ -1,3 +1,5 @@
+package zeroplane;
+
 message ZeroPlaneMsg {
 	optional Attitude attitude = 1;
     optional Airplane airplane = 2;

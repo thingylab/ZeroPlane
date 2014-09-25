@@ -15,9 +15,9 @@ PROTOBUF_C__BEGIN_DECLS
 #endif
 
 
-typedef struct _ZeroPlaneMsg ZeroPlaneMsg;
-typedef struct _Attitude Attitude;
-typedef struct _Airplane Airplane;
+typedef struct _Zeroplane__ZeroPlaneMsg Zeroplane__ZeroPlaneMsg;
+typedef struct _Zeroplane__Attitude Zeroplane__Attitude;
+typedef struct _Zeroplane__Airplane Zeroplane__Airplane;
 
 
 /* --- enums --- */
@@ -25,18 +25,18 @@ typedef struct _Airplane Airplane;
 
 /* --- messages --- */
 
-struct  _ZeroPlaneMsg
+struct  _Zeroplane__ZeroPlaneMsg
 {
   ProtobufCMessage base;
-  Attitude *attitude;
-  Airplane *airplane;
+  Zeroplane__Attitude *attitude;
+  Zeroplane__Airplane *airplane;
 };
-#define ZERO_PLANE_MSG__INIT \
- { PROTOBUF_C_MESSAGE_INIT (&zero_plane_msg__descriptor) \
+#define ZEROPLANE__ZERO_PLANE_MSG__INIT \
+ { PROTOBUF_C_MESSAGE_INIT (&zeroplane__zero_plane_msg__descriptor) \
     , NULL, NULL }
 
 
-struct  _Attitude
+struct  _Zeroplane__Attitude
 {
   ProtobufCMessage base;
   float pitch;
@@ -46,12 +46,12 @@ struct  _Attitude
   float vertical_speed;
   float heading;
 };
-#define ATTITUDE__INIT \
- { PROTOBUF_C_MESSAGE_INIT (&attitude__descriptor) \
+#define ZEROPLANE__ATTITUDE__INIT \
+ { PROTOBUF_C_MESSAGE_INIT (&zeroplane__attitude__descriptor) \
     , 0, 0, 0, 0, 0, 0 }
 
 
-struct  _Airplane
+struct  _Zeroplane__Airplane
 {
   ProtobufCMessage base;
   int32_t plane_num;
@@ -63,78 +63,78 @@ struct  _Airplane
   float vno;
   float vne;
 };
-#define AIRPLANE__INIT \
- { PROTOBUF_C_MESSAGE_INIT (&airplane__descriptor) \
+#define ZEROPLANE__AIRPLANE__INIT \
+ { PROTOBUF_C_MESSAGE_INIT (&zeroplane__airplane__descriptor) \
     , 0, NULL, 0, 0, 0, 0, 0, 0 }
 
 
-/* ZeroPlaneMsg methods */
-void   zero_plane_msg__init
-                     (ZeroPlaneMsg         *message);
-size_t zero_plane_msg__get_packed_size
-                     (const ZeroPlaneMsg   *message);
-size_t zero_plane_msg__pack
-                     (const ZeroPlaneMsg   *message,
+/* Zeroplane__ZeroPlaneMsg methods */
+void   zeroplane__zero_plane_msg__init
+                     (Zeroplane__ZeroPlaneMsg         *message);
+size_t zeroplane__zero_plane_msg__get_packed_size
+                     (const Zeroplane__ZeroPlaneMsg   *message);
+size_t zeroplane__zero_plane_msg__pack
+                     (const Zeroplane__ZeroPlaneMsg   *message,
                       uint8_t             *out);
-size_t zero_plane_msg__pack_to_buffer
-                     (const ZeroPlaneMsg   *message,
+size_t zeroplane__zero_plane_msg__pack_to_buffer
+                     (const Zeroplane__ZeroPlaneMsg   *message,
                       ProtobufCBuffer     *buffer);
-ZeroPlaneMsg *
-       zero_plane_msg__unpack
+Zeroplane__ZeroPlaneMsg *
+       zeroplane__zero_plane_msg__unpack
                      (ProtobufCAllocator  *allocator,
                       size_t               len,
                       const uint8_t       *data);
-void   zero_plane_msg__free_unpacked
-                     (ZeroPlaneMsg *message,
+void   zeroplane__zero_plane_msg__free_unpacked
+                     (Zeroplane__ZeroPlaneMsg *message,
                       ProtobufCAllocator *allocator);
-/* Attitude methods */
-void   attitude__init
-                     (Attitude         *message);
-size_t attitude__get_packed_size
-                     (const Attitude   *message);
-size_t attitude__pack
-                     (const Attitude   *message,
+/* Zeroplane__Attitude methods */
+void   zeroplane__attitude__init
+                     (Zeroplane__Attitude         *message);
+size_t zeroplane__attitude__get_packed_size
+                     (const Zeroplane__Attitude   *message);
+size_t zeroplane__attitude__pack
+                     (const Zeroplane__Attitude   *message,
                       uint8_t             *out);
-size_t attitude__pack_to_buffer
-                     (const Attitude   *message,
+size_t zeroplane__attitude__pack_to_buffer
+                     (const Zeroplane__Attitude   *message,
                       ProtobufCBuffer     *buffer);
-Attitude *
-       attitude__unpack
+Zeroplane__Attitude *
+       zeroplane__attitude__unpack
                      (ProtobufCAllocator  *allocator,
                       size_t               len,
                       const uint8_t       *data);
-void   attitude__free_unpacked
-                     (Attitude *message,
+void   zeroplane__attitude__free_unpacked
+                     (Zeroplane__Attitude *message,
                       ProtobufCAllocator *allocator);
-/* Airplane methods */
-void   airplane__init
-                     (Airplane         *message);
-size_t airplane__get_packed_size
-                     (const Airplane   *message);
-size_t airplane__pack
-                     (const Airplane   *message,
+/* Zeroplane__Airplane methods */
+void   zeroplane__airplane__init
+                     (Zeroplane__Airplane         *message);
+size_t zeroplane__airplane__get_packed_size
+                     (const Zeroplane__Airplane   *message);
+size_t zeroplane__airplane__pack
+                     (const Zeroplane__Airplane   *message,
                       uint8_t             *out);
-size_t airplane__pack_to_buffer
-                     (const Airplane   *message,
+size_t zeroplane__airplane__pack_to_buffer
+                     (const Zeroplane__Airplane   *message,
                       ProtobufCBuffer     *buffer);
-Airplane *
-       airplane__unpack
+Zeroplane__Airplane *
+       zeroplane__airplane__unpack
                      (ProtobufCAllocator  *allocator,
                       size_t               len,
                       const uint8_t       *data);
-void   airplane__free_unpacked
-                     (Airplane *message,
+void   zeroplane__airplane__free_unpacked
+                     (Zeroplane__Airplane *message,
                       ProtobufCAllocator *allocator);
 /* --- per-message closures --- */
 
-typedef void (*ZeroPlaneMsg_Closure)
-                 (const ZeroPlaneMsg *message,
+typedef void (*Zeroplane__ZeroPlaneMsg_Closure)
+                 (const Zeroplane__ZeroPlaneMsg *message,
                   void *closure_data);
-typedef void (*Attitude_Closure)
-                 (const Attitude *message,
+typedef void (*Zeroplane__Attitude_Closure)
+                 (const Zeroplane__Attitude *message,
                   void *closure_data);
-typedef void (*Airplane_Closure)
-                 (const Airplane *message,
+typedef void (*Zeroplane__Airplane_Closure)
+                 (const Zeroplane__Airplane *message,
                   void *closure_data);
 
 /* --- services --- */
@@ -142,9 +142,9 @@ typedef void (*Airplane_Closure)
 
 /* --- descriptors --- */
 
-extern const ProtobufCMessageDescriptor zero_plane_msg__descriptor;
-extern const ProtobufCMessageDescriptor attitude__descriptor;
-extern const ProtobufCMessageDescriptor airplane__descriptor;
+extern const ProtobufCMessageDescriptor zeroplane__zero_plane_msg__descriptor;
+extern const ProtobufCMessageDescriptor zeroplane__attitude__descriptor;
+extern const ProtobufCMessageDescriptor zeroplane__airplane__descriptor;
 
 PROTOBUF_C__END_DECLS
 
