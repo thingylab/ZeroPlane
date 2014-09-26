@@ -20,12 +20,18 @@ void *build_datarefs_map() {
     
     for(int i=0; i<DATAREFS_NUM; i++) {
         dataref_rep_t *dr = (dataref_rep_t *)malloc(sizeof(dataref_rep_t));
-        char *key = datarefs[i][0];
+        char *path = datarefs[i][1];
         
-        dr->path = key;
+        dr->path = path;
         dr->dataref = XPLMFindDataRef(datarefs[i][1]);
         
-        hashmap_set(map, key, dr);
+        if(dr->dataref == NULL) {
+            XPLMDebugString("[ZeroPlane] Cannot find dataref: ");
+            XPLMDebugString(datarefs[i][1]);
+            XPLMDebugString("\n");
+        }
+        
+        hashmap_set(map, datarefs[i][0], dr);
     }
     
     return map;

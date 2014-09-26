@@ -31,7 +31,7 @@
 #define TURNRATE_ROLL "turnrate_roll" // Not too sure, this is flight model data
 
 
-#define DATAREFS_TABLE {TAILNUM, "sim/aircraft/view/tailnum"}, \
+#define DATAREFS_TABLE {TAILNUM, "sim/aircraft/view/acf_tailnum"}, \
     {HAS_STALLWARN, "sim/aircraft/view/acf_has_stallwarn"}, \
     {SPEED_VSO, "sim/aircraft/view/acf_Vso"}, \
     {SPEED_VS, "sim/aircraft/view/acf_Vs"}, \
@@ -46,7 +46,7 @@
     {TURNRATE_ROLL, "sim/flightmodel/misc/turnrate_roll"}, \
     {VERTICAL_SPEED, "sim/flightmodel/position/vh_ind_fpm"}
 
-char *datarefs[][2] = { DATAREFS_TABLE };
+static char *datarefs[][2] = { DATAREFS_TABLE };
 
 #define DATAREFS_NUM (sizeof(datarefs) / sizeof(datarefs[0]))
 

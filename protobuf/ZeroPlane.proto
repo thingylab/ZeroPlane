@@ -1,28 +1,28 @@
 package zeroplane;
 
-message ZeroPlaneMsg {
+message Message {
 	optional Attitude attitude = 1;
     optional Airplane airplane = 2;
 }
 
 message Attitude {
-	required float pitch = 1;
-	required float roll = 2;
-	required float yaw = 3;
-	required float altitude = 4;
-	required float vertical_speed = 5;
-	required float heading = 6;
+	optional float pitch = 1;
+	optional float roll = 2;
+	optional float yaw = 3;
+	optional float altitude = 4;
+	optional float vertical_speed = 5;
+	optional float heading = 6;
 }
 
 message Airplane {
     required int32 plane_num = 1;
     
-    required string tailnum = 2;
-    required bool has_stallwarn = 3;
+    optional string tailnum = 2;
+    optional bool has_stallwarn = 3;
     
-    required float vso = 4;
-    required float vs = 5;
-    required float vfe = 6;
-    required float vno = 7;
-    required float vne = 8;
+    optional float vso = 4;
+    optional float vs = 5;
+    optional float vfe = 6;
+    optional float vno = 7;
+    optional float vne = 8;
 }
