@@ -2,3 +2,5 @@
 copy
 bin/*
 client/python/venv
+client/python/*pb2.py*
+xpplugin/protobuf/*
