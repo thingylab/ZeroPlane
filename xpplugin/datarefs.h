@@ -11,14 +11,14 @@
 //   - /sim/cockpit/warnings
 
 // General Airplane Info
-#define TAILNUM "tailnum"
-#define HAS_STALLWARN "has_stallwarn"
+#define TAILNUM "pln_tailnum"
+#define HAS_STALLWARN "pln_has_stallwarn"
 // Ref speeds
-#define SPEED_VSO "spd_vso"
-#define SPEED_VS "spd_vs"
-#define SPEED_VFE "spd_vfe"
-#define SPEED_VNO "spd_vno"
-#define SPEED_VNE "spd_vne"
+#define SPEED_VSO "pln_spd_vso"
+#define SPEED_VS "pln_spd_vs"
+#define SPEED_VFE "pln_spd_vfe"
+#define SPEED_VNO "pln_spd_vno"
+#define SPEED_VNE "pln_spd_vne"
 // Indicated date from gyro instruments
 #define GYRO1_PITCH "g1_pitch"
 #define GYRO1_HEADING "g1_heading"

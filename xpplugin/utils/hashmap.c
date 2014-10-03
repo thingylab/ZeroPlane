@@ -10,36 +10,11 @@
  * It's been a long time since I last implemented a hashmap in C.
  */
 
-typedef struct bucket_t {
-	char *key;
-	void *payload;
-	
-	struct bucket_t *next;
-} bucket_t;
-
-typedef struct hash_map_t {
-	bucket_t **buckets;
-	int buckets_n;
-} hash_map_t;
-
-typedef struct iterator_t {
-    hash_map_t *map;
-    int cur_bucket_idx;
-    bucket_t *current;
-    
-    bool is_at_end;
-} iterator_t;
-
-///////////////////////////////
-// Utility (private) functions.
-///////////////////////////////
-
-#define MAP_POINTER(map) ((hash_map_t *)map)
-
 // "djb2" string hash function
 // See: http://www.cse.yorku.ca/~oz/hash.html
 // And: https://groups.google.com/forum/#!msg/comp.lang.c/lSKWXiuNOAk/zstZ3SRhCjgJ
-unsigned long str_hash(char *str) {
+unsigned long str_hash(char *str) 
+{
 	unsigned long hash = 5381;
 	int c;
 
@@ -50,7 +25,8 @@ unsigned long str_hash(char *str) {
 }
 
 // Computes the bucket index the given key belongs to.
-int get_bucket_idx(hash_map_t *map, char *key) {
+int get_bucket_idx(hashmap_t *map, char *key) 
+{
 	unsigned long hash = str_hash(key);
 	
     return hash % map->buckets_n;
@@ -61,8 +37,9 @@ int get_bucket_idx(hash_map_t *map, char *key) {
 //////////////////////////////////
 
 // Initializes a new hash_map with 'bucket_n' buckets.
-void *hashmap_init_size(int bucket_n) {
-	hash_map_t *new_map = (hash_map_t *)malloc(sizeof(hash_map_t));
+hashmap_t *hashmap_init_size(int bucket_n) 
+{
+	hashmap_t *new_map = (hashmap_t *)malloc(sizeof(hashmap_t));
 	
 	// Init NULL buckets
 	new_map->buckets_n = bucket_n;
@@ -73,19 +50,22 @@ void *hashmap_init_size(int bucket_n) {
 }
 
 // Initializes a new hash map with 50 buckets.
-void *hashmap_init() {
+hashmap_t *hashmap_init() 
+{
 	return hashmap_init_size(50);
 }
 
 // Returns the number of elements in the map.
-unsigned long hashmap_size(void *hash_map) {
-    hash_map_t *map = MAP_POINTER(hash_map);
+unsigned long hashmap_size(hashmap_t *map) 
+{
     unsigned long count = 0;
     
-    for(int i=0; i<map->buckets_n; i++){
+    for(int i=0; i<map->buckets_n; i++)
+    {
         bucket_t *bucket = map->buckets[i];
 
-        while(bucket != NULL) {
+        while(bucket != NULL) 
+        {
             count++;
             
             bucket = bucket->next;
@@ -96,13 +76,14 @@ unsigned long hashmap_size(void *hash_map) {
 }
 
 
-bool hashmap_contains_key(void *hash_map, char *key) {
-    hash_map_t *map = MAP_POINTER(hash_map);
+bool hashmap_contains_key(hashmap_t *map, char *key) 
+{
     int bucket_idx = get_bucket_idx(map, key);
     
     bucket_t *bucket = map->buckets[bucket_idx];
     
-    while(bucket != NULL) {
+    while(bucket != NULL)
+    {
         if(strcmp(bucket->key, key) == 0)
             return true;
         
@@ -113,9 +94,8 @@ bool hashmap_contains_key(void *hash_map, char *key) {
 }
 
 // Adds a new key/value pair to the map.
-void hashmap_set(void *hash_map, char *key, void *value) {
-	hash_map_t *map = MAP_POINTER(hash_map);
-	
+void hashmap_set(hashmap_t *map, char *key, void *value) 
+{	
 	// Hash key a compute destination bucket index
 	unsigned long hash = str_hash(key);
 	int bucket_idx = get_bucket_idx(map, key);
@@ -131,7 +111,8 @@ void hashmap_set(void *hash_map, char *key, void *value) {
 	bucket_t *prev_bucket = map->buckets[bucket_idx];
     
     // Nothing in the bucket: set the head element and return.
-    if(prev_bucket == NULL) {
+    if(prev_bucket == NULL) 
+    {
         map->buckets[bucket_idx] = new_bucket;
         return;
     }
@@ -139,14 +120,16 @@ void hashmap_set(void *hash_map, char *key, void *value) {
     // Otherwise, loop through the elements and replace or add
     
     while(true) {
-        if(strcmp(key, prev_bucket->key) == 0) {
+        if(strcmp(key, prev_bucket->key) == 0) 
+        {
             // The key already exists: replace the payload.
             // What should happen to the old payload? Should it be freed?
             prev_bucket->payload = value;
             return;
         }
         
-        if(prev_bucket->next == NULL) {
+        if(prev_bucket->next == NULL) 
+        {
             prev_bucket->next = new_bucket;
             return;
         }
@@ -156,9 +139,8 @@ void hashmap_set(void *hash_map, char *key, void *value) {
 }
 
 // Returns the value for the given key. NULL if the key does not exist.
-void *hashmap_get(void *hash_map, char *key) {
-	hash_map_t *map = MAP_POINTER(hash_map);
-	
+void *hashmap_get(hashmap_t *map, char *key) 
+{	
 	// Hash key a compute destination bucket index
 	unsigned long hash = str_hash(key);
 	int bucket_idx = get_bucket_idx(map, key);
@@ -174,84 +156,103 @@ void *hashmap_get(void *hash_map, char *key) {
 	return b->payload;
 }
 
+/////////////////////////////
+// String utility function(s)
+/////////////////////////////
+
+// From http://stackoverflow.com/questions/4770985/something-like-startswithstr-a-str-b-in-c
+bool startsWith(const char *pre, const char *str)
+{
+    size_t lenpre = strlen(pre);
+    size_t lenstr = strlen(str);
+    
+    return lenstr < lenpre ? false : strncmp(pre, str, lenpre) == 0;
+}
+
 
 ///////////////////////////////
 // Iterating Through A Hash Map
 ///////////////////////////////
 
-void *hashmap_iterator(void * hash_map) {
-    hash_map_t *map = MAP_POINTER(hash_map);
-    bucket_t *first_bucket = NULL;
+// Private utility function
+// Updates the iterator to go to the next value, without taking filters into account
+// Same return semantics as hashmap_iterator_next
+// NOTE: this thing should probably free the iterator before returning NULL...
+iterator_t *it_nxt(iterator_t *it)
+{ 
+    if(it == NULL)
+        return NULL;
+    
+    if(it->current != NULL && it->current->next != NULL){
+        it->current = it->current->next;
+        return it;
+    }
+    
+    for(int i=it->cur_bucket_idx+1; i<it->map->buckets_n; i++)
+    {
+        if(it->map->buckets[i] != NULL)
+        {
+            it->cur_bucket_idx = i;
+            it->current = it->map->buckets[i];
+            
+            return it;
+        }
+    }
+    
+    return NULL;
+}
+
+iterator_t *hashmap_iterator_filter(hashmap_t * map, char *keyStartsWith) 
+{
     iterator_t *it = (iterator_t *)malloc(sizeof(iterator_t));
     int first_bucket_idx = 0;
     
-    // Find first non-NULL bucket, if any
-    for(first_bucket_idx=0; first_bucket_idx<map->buckets_n; first_bucket_idx++) {
-        if(map->buckets[first_bucket_idx] != NULL) {
-            first_bucket = map->buckets[first_bucket_idx];
-            break;
-        }
-    }
-    
     it->map = map;
     it->cur_bucket_idx = first_bucket_idx;
-    it->current = first_bucket;
-    it->is_at_end = first_bucket == NULL ? true : false;
+    it->current = NULL;
+    it->filter = keyStartsWith;
     
-    return (void*)it;
+    it = it_nxt(it);
+    
+    if(it == NULL)
+        return NULL;
+    
+    if(!startsWith(it->filter, hashmap_iterator_key(it)))
+        it = hashmap_iterator_next(it);
+    
+    return it;
 }
 
-bool hashmap_iterator_has_next(void *iterator) {
-    iterator_t *it = (iterator_t *)iterator;
-    
-    if(it->current->next != NULL)
-        return true;
-    
-    for(int i=it->cur_bucket_idx+1; i<it->map->buckets_n; i++) {
-        if(it->map->buckets[i] != NULL)
-            return true;
-    }
-    
-    return false;
+iterator_t *hashmap_iterator(hashmap_t * map) 
+{
+    return hashmap_iterator_filter(map, NULL);
 }
 
-bool hashmap_iterator_next(void *iterator) {
-    iterator_t *it = (iterator_t *)iterator;
+// Returns the updated iterator, or NULL if there is no further element.
+iterator_t *hashmap_iterator_next(iterator_t *it) 
+{
+    if(it->filter == NULL)
+        return it_nxt(it);
     
-    if(!hashmap_iterator_has_next(iterator)) {
-        it->is_at_end = true;
-        return false;
-    }
-    
-    if(it->current->next != NULL) {
-        it->current = it->current->next;
-        return true;
-    }
-    
-    for(int i=it->cur_bucket_idx+1; i<it->map->buckets_n; i++) {
-        if(it->map->buckets[i] != NULL) {
-            it->current = it->map->buckets[i];
-            it->cur_bucket_idx = i;
-            return true;
-        }
-    }
-    
-    return false;
+    do 
+    {
+        it = it_nxt(it);
+    } while(it != NULL && !startsWith(it->filter, hashmap_iterator_key(it)));
+
+    return it;
 }
 
-char *hashmap_iterator_key(void *iterator) {
-    iterator_t *it = (iterator_t *)iterator;
-    
-    if(it->is_at_end)
+char *hashmap_iterator_key(iterator_t *it) 
+{    
+    if(it == NULL)
         return NULL;
     
     return it->current->key;
 }
 
-void *hashmap_iterator_value(void *iterator) {
-    iterator_t *it = (iterator_t *)iterator;
-    
-    if(it->is_at_end)
+void *hashmap_iterator_value(iterator_t *it) 
+{
+    if(it == NULL)
         return NULL;
     
     return it->current->payload;
