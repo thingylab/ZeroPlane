@@ -3,31 +3,38 @@
 #include "../datarefs.h"
 
 int main(int argc, char **argv) {
+    
+    getchar();
 	
 	//printf("%s = %s\n\n", datarefs[1][0], datarefs[1][1]);
     printf("%lu\n\n\n", DATAREFS_NUM);
 	
 	void *map = hashmap_init_size(50);
 	
-	hashmap_set(map, "test", "prout");
+	hashmap_set(map, "a_test", "prout");
 	hashmap_set(map, "test2", "prout2");
-	hashmap_set(map, "test3", "prout3");
+	hashmap_set(map, "a_test3", "prout3");
 	hashmap_set(map, "test4", "prout4");
+    hashmap_set(map, "a_test4", "prout3");
+    hashmap_set(map, "a_test5", "prout3");
+    hashmap_set(map, "a_test6", "prout3");
 	
-	printf("map['test'] = %s\n", (char *)hashmap_get(map, "test"));
-	printf("map['test2'] = %s\n", (char *)hashmap_get(map, "test2"));
-	printf("map['test3'] = %s\n", (char *)hashmap_get(map, "test3"));
-	printf("map['test4'] = %s\n", (char *)hashmap_get(map, "test4"));
+	// printf("map['test'] = %s\n", (char *)hashmap_get(map, "test"));
+//     printf("map['test2'] = %s\n", (char *)hashmap_get(map, "test2"));
+//     printf("map['test3'] = %s\n", (char *)hashmap_get(map, "test3"));
+//     printf("map['test4'] = %s\n", (char *)hashmap_get(map, "test4"));
     
     printf("%lu \n\n", hashmap_size(map));
     
     printf("\n\nEnumerating keys:\n");
     
-    void *it = hashmap_iterator(map);
+    void *it = hashmap_iterator_filter(map, "b_");
     
-    do {
+    while(it != NULL)
+    {
         printf("  - %s => %s\n", hashmap_iterator_key(it), (char *)hashmap_iterator_value(it));
-    } while(hashmap_iterator_next(it));
+        it = hashmap_iterator_next(it);
+    }
 	
 	return 0;
 }

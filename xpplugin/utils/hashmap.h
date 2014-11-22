@@ -1,3 +1,6 @@
+#ifndef HASHMAP_H_4A5BE4BA
+#define HASHMAP_H_4A5BE4BA
+
 #include <stdio.h>
 #include <stdbool.h>
 
@@ -36,3 +39,5 @@ iterator_t *hashmap_iterator_filter(hashmap_t *hash_map, char *keyStartsWith);
 iterator_t *hashmap_iterator_next(iterator_t *iterator);
 char *hashmap_iterator_key(iterator_t *iterator);
 void *hashmap_iterator_value(iterator_t *iterator);
+
+#endif /* end of include guard: HASHMAP_H_4A5BE4BA */

@@ -12,11 +12,12 @@
 #include "XPLMScenery.h"
 
 #include "datarefs.h"
-#include "init.h"
 #include "utils/hashmap.h"
+#include "init.h"
 
-void *build_datarefs_map() {
-    void *map = hashmap_init();
+
+hashmap_t *build_datarefs_map() {
+    hashmap_t *map = hashmap_init();
     
     for(int i=0; i<DATAREFS_NUM; i++) {
         dataref_rep_t *dr = (dataref_rep_t *)malloc(sizeof(dataref_rep_t));

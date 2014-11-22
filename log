@@ -1,0 +1,1 @@
+tail -f "/Users/pierre/Library/Application Support/Steam/SteamApps/common/X-Plane 10/Log.txt" | grep ZeroPlane

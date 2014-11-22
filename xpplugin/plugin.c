@@ -18,10 +18,9 @@
 #include "init.h"
 #include "datarefs.h"
 #include "utils/hashmap.h"
+#include "msg/airplane.h"
 #include "protobuf/ZeroPlane.pb-c.h"
 
-// The following global stuff will have to move someplace else
-void *datarefs_map = NULL;
 
 void *context = NULL;
 void *socket = NULL;
@@ -90,40 +89,9 @@ float myCallback(float inElapsedSinceLastCall, float inElapsedTimeSinceLastFligh
     // char str[80];
     // sprintf(str, "Pitch = %f", curPitch); // Unsafe much?
     
-    Zeroplane__Message msg = ZEROPLANE__MESSAGE__INIT;
-    Zeroplane__Airplane airplane = ZEROPLANE__AIRPLANE__INIT;
-	void *buf;
-	size_t len;
+    zmq_msg_t *msg = airplane_message();
     
-    XPLMDataRef callSignDataRef = XPLMFindDataRef("sim/aircraft/view/acf_tailnum");
-    if(callSignDataRef == NULL)
-        XPLMDebugString("[ZeroPlane] Nope!\n");
-    
-    XPLMDebugString(((dataref_rep_t *)hashmap_get(datarefs_map, TAILNUM))->path);
-    char callsign[40];
-    int copied = XPLMGetDatab(callSignDataRef, callsign, 0, 39);
-    
-    
-    msg.airplane = &airplane;
-    
-    airplane.plane_num = 1;
-    airplane.tailnum = callsign;
-    
-    len = zeroplane__message__get_packed_size(&msg);
-    buf = malloc(len);
-    
-    char str[800];
-    sprintf(str, "[ZeroPlane] Packed size = %lu\n[ZeroPlane] nb copied: %i", len, copied);
-    XPLMDebugString(str);
-    
-    zeroplane__message__pack(&msg, buf);
-    
-	zmq_msg_t zmqmsg;
-	int a = zmq_msg_init_size(&zmqmsg, len); //len*4
-	void *data = zmq_msg_data(&zmqmsg);
- 	memcpy(data, buf, len);
-    
-    zmq_msg_send(&zmqmsg, socket, 0);
+    zmq_msg_send(msg, socket, 0);
         
     XPLMDebugString("[ZeroPlane] Sending a message...\n");
     // zmq_send(socket, "AHello", 7, 0);
