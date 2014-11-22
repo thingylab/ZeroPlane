@@ -10,7 +10,7 @@ typedef struct {
     XPLMDataRef dataref;
 } dataref_rep_t;
 
-static hashmap_t *datarefs_map = NULL;
+extern hashmap_t *datarefs_map;
 
 hashmap_t *build_datarefs_map();
 

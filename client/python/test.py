@@ -1,3 +1,4 @@
+import ZeroPlane_pb2
 import zmq
 
 def subscribe():
@@ -5,10 +6,13 @@ def subscribe():
     socket = ctx.socket(zmq.SUB)
     socket.connect("tcp://localhost:5556")
     socket.setsockopt(zmq.SUBSCRIBE, b"")
-
+    
     while True:
-        print(socket.recv_multipart())
-        # print("-> {0}".format(msg))
+        msg = socket.recv()
+
+        pb = ZeroPlane_pb2.Message()
+        pb.ParseFromString(msg)
+        print(pb)
 
 if __name__ == "__main__":
     subscribe()

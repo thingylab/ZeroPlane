@@ -15,6 +15,7 @@
 #include "utils/hashmap.h"
 #include "init.h"
 
+hashmap_t *datarefs_map = NULL;
 
 hashmap_t *build_datarefs_map() {
     hashmap_t *map = hashmap_init();

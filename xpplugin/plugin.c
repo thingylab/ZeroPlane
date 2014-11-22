@@ -82,19 +82,9 @@ PLUGIN_API void XPluginReceiveMessage(XPLMPluginID inFromWho, long inMessage, vo
 
 float myCallback(float inElapsedSinceLastCall, float inElapsedTimeSinceLastFlightLoop, int inCounter, void * inRefcon) 
 {
-    // float curPitch = 0.0;
-    //
-    // curPitch = XPLMGetDataf(pitch);
-    //
-    // char str[80];
-    // sprintf(str, "Pitch = %f", curPitch); // Unsafe much?
-    
     zmq_msg_t *msg = airplane_message();
     
     zmq_msg_send(msg, socket, 0);
         
-    XPLMDebugString("[ZeroPlane] Sending a message...\n");
-    // zmq_send(socket, "AHello", 7, 0);
-    
     return 5.0;
 }
