@@ -8,4 +8,4 @@ Clients can be written in any language and for any platform that supports these 
 
 An example python client implementation is provided.
 
-It is released under the MIT License.
+ZeroPlane is released under the MIT License.
